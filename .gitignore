@@ -55,3 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#msg created folder
+msg/
+
+#gedit and emacs temporary files
+*.*~
