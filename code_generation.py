@@ -8,6 +8,7 @@ Created on Tue Jul 21 16:54:59 2015
 from fileinput import *
 import argparse
 from ConfigParser import RawConfigParser
+from src.yarp_action_lib_server_generator import yarp_action_lib_server_generator as action_gen
 
 def process_input():
 #    for line in fileinput.input(args):
@@ -45,16 +46,20 @@ def process_input():
         action_file_str='';
         action_dir_str=''
     try:
-        absolute_path_fn = os.path.dirname(__file__) + action_file_str[1:]
+        absolute_path_fn = os.path.dirname(__file__) + '/actions/' + action_file_str
         absolute_dir_name = os.path.dirname(__file__) + '/' + action_dir_str
+        print absolute_path_fn
+        print absolute_dir_name
         my_temp_fp = open(absolute_path_fn)
         my_temp_fp.close()
     except IOError:
         print 'Action file does not exist'
-    return (absolute_path_fn,absolute_dir_name)
+    return {'file_name': absolute_path_fn, 'dir_name': absolute_dir_name}
 #        for line in args.input:
 #            print line,
 if __name__ == "__main__":
-   print process_input()
+   absolute_io_inputs = process_input()
+   action_code_generator = action_gen(absolute_io_inputs)
+   action_code_generator.generate_mgs_files()
    #Run the following command to get the .msg files
    #rosrun actionlib_msgs genaction.py Fibonacci.action -o ./msg
