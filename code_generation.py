@@ -40,16 +40,18 @@ def process_input():
     elif args.action_file and args.action_dir and args.code_dir:
         action_file_str = args.action_file
         action_dir_str = args.action_dir
-        action_dir_str = args.code_dir        
+        code_dir_str = args.code_dir        
         if args.verbose:
             print 'Action file: ' + action_file_str
             print 'Relative directory to store the msg files: ' + action_dir_str
             print 'Relative directory to store the generated code: ' + code_dir_str
     else:
-        print 'Missing arguments for proper execution'
+        print 'Missing one or more arguments for proper execution'
         parser.print_help()
-        action_file_str='';
+        action_file_str=''
         action_dir_str=''
+        code_dir_str=''
+        quit()
     try:
         absolute_path_fn = os.path.dirname(__file__) + '/actions/' + action_file_str
         absolute_action_dir_name = os.path.dirname(__file__) + '/' + action_dir_str
@@ -61,7 +63,8 @@ def process_input():
         my_temp_fp.close()
     except IOError:
         print 'Action file does not exist'
-    return {'file_name': absolute_path_fn, 'action_dir_name': absolute_action_dir_name, 'rel_action_dir_name': action_dir_str,'code_dir_name': absolute_code_dir_name,'rel_code_dir_name': code_dir_str}
+        quit()
+    return {'file_name': absolute_path_fn, 'relative_action_file_name': action_file_str, 'action_dir_name': absolute_action_dir_name, 'rel_action_dir_name': action_dir_str,'code_dir_name': absolute_code_dir_name,'rel_code_dir_name': code_dir_str}
 #        for line in args.input:
 #            print line,
 if __name__ == "__main__":
@@ -69,5 +72,6 @@ if __name__ == "__main__":
    action_code_generator = action_gen(absolute_io_inputs)
    action_code_generator.generate_mgs_files()
    action_code_generator.generate_buffered_port_files()
+   action_code_generator.generate_action_server_cpp()
    #Run the following command to get the .msg files
    #rosrun actionlib_msgs genaction.py Fibonacci.action -o ./msg
