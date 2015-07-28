@@ -24,7 +24,9 @@ class yarp_action_lib_server_generator:
         
     def generate_mgs_files(self):
         #call python script
-        subprocess.call(['rosrun actionlib_msgs genaction.py ' + self.file_name + ' -o ' + self.action_directory_name], shell=True)
+        #new_env = os.environ.copy()
+        #subprocess.call(['rosrun actionlib_msgs genaction.py ' + self.file_name + ' -o ' + self.action_directory_name], shell=True, executable='/bin/bash')
+        subprocess.call(['/bin/bash', '-i', '-c', 'rosrun actionlib_msgs genaction.py ' + self.file_name + ' -o ' + self.action_directory_name])
         print 'rosrun actionlib_msgs genaction.py ' + self.file_name + ' -o ' + self.action_directory_name
         #rosrun actionlib_msgs genaction.py Fibonacci.action -o ./msg
     
@@ -38,10 +40,12 @@ class yarp_action_lib_server_generator:
                 print name, root
                 origWD = os.getcwd() # remember our original working directory
                 os.chdir(os.path.join(os.path.abspath(sys.path[0]), self.relative_action_dir_name))
-                subprocess.Popen(['yarpidl_rosmsg','--out ' , self.code_directory_name + '/include ' ,  name]) 
+                #subprocess.Popen(['yarpidl_rosmsg','--out ' , self.code_directory_name + '/include ' ,  name]) 
+                subprocess.Popen(['/bin/bash', '-i', '-c', 'yarpidl_rosmsg --out ' + self.code_directory_name + '/include ' +  name])
                 os.chdir(origWD) # get
         os.chdir(os.path.join(os.path.abspath(sys.path[0]), self.relative_action_dir_name))
-        subprocess.Popen(['yarpidl_rosmsg','--out ' , self.code_directory_name + '/include ' ,  'actionlib_msgs/GoalStatusArray'])
+        #subprocess.Popen(['yarpidl_rosmsg','--out ' , self.code_directory_name + '/include ' ,  'actionlib_msgs/GoalStatusArray'])
+        subprocess.Popen(['/bin/bash', '-i', '-c','yarpidl_rosmsg --out ' + self.code_directory_name + '/include + actionlib_msgs/GoalStatusArray'])
         os.chdir(origWD)
                 #subprocess.call(['yarpidl_rosmsg --out ' + self.code_directory_name + '/include ' + ' ./' + self.relative_action_dir_name + '/' + name], shell=True)
                 #print ['yarpidl_rosmsg --out ' + './' + self.code_directory_name + '/include ' + ' ./' + self.relative_action_dir_name + '/' + name]

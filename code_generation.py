@@ -9,6 +9,7 @@ from fileinput import *
 import argparse
 from ConfigParser import RawConfigParser
 from src.yarp_action_lib_server_generator import yarp_action_lib_server_generator as action_gen
+import os
 
 def process_input():
 #    for line in fileinput.input(args):
