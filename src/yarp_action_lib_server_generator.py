@@ -19,6 +19,7 @@ class yarp_action_lib_server_generator:
         self.relative_code_dir_name = io_inputs['rel_code_dir_name']
         self.action_server_cpp_file_name = io_inputs['rel_code_dir_name']
         self.action_name_str = re.sub('.action$', '', io_inputs['relative_action_file_name'])
+        self.action_namespace = io_inputs['action_namespace']
 
 #        self.absolute_path = io_inputs['path']
         
